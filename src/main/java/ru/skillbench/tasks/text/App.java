@@ -88,7 +88,7 @@ public class App
                             System.out.println("//   InputMismatchException  - завершить программу");
                         }
                         cBirthday = cField.split(":")[1];
-                        //"DD-MM-YYYY"
+                        // "DD-MM-YYYY"
 
                     }  else if (cField.startsWith("TEL")) {
 
