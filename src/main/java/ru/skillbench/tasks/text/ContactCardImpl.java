@@ -1,7 +1,7 @@
 package ru.skillbench.tasks.text;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
+//import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -55,7 +55,7 @@ import java.util.*;
             String data = "";
             String cPhone = "";
             String cBirthday = "";
-            String [] aContains = {"FN", "ORG", "BEGIN:VCARD", "END:VCARD"}; // проверочные слова
+            String[] aContains = {"FN", "ORG", "BEGIN:VCARD", "END:VCARD"}; // проверочные слова
             boolean lContains = true;
 
             while (scanner.hasNext()) {
@@ -63,15 +63,15 @@ import java.util.*;
             }
 
             // проверка на входение обязательный слов
-            for (String cContains: aContains ) {
+            for (String cContains: aContains) {
                 lContains = data.contains(cContains);
-                if (! lContains) {
+                if (!lContains) {
                     break;
                 }
             }
-            if ( lContains) {
+            if (lContains) {
                 // первой строкой всегда идет BEGIN:VCARD, последней - END:VCARD
-                if ( !(data.startsWith("BEGIN:VCARD") & data.endsWith("END:VCARD\n")) ) {
+                if (!(data.startsWith("BEGIN:VCARD") & data.endsWith("END:VCARD\n"))) {
                     //System.out.println("//InputMismatchException");
                     lContains = false;
                     throw new InputMismatchException();
@@ -87,13 +87,13 @@ import java.util.*;
                     //System.out.println("split " + cField); // + " " + cField.length() +" "+ "BEGIN:VCARD".length());
                     if (cField.startsWith("GENDER")) {
 
-                        if ( cField.split(":")[0].length() != "GENDER".length() ) {
+                        if (cField.split(":")[0].length() != "GENDER".length()) {
                             //System.out.println("//   InputMismatchException  - QUIT - после Ключа нет :");
                             throw new InputMismatchException();
                             //Woman = false;
                             //continue;
                         }
-                        if (cField.split(":").length != 2 ) { // должно быть два элемнта
+                        if (cField.split(":").length != 2) { // должно быть два элемнта
                              throw new InputMismatchException();
                             //Woman = false;
                             //continue;
@@ -109,40 +109,49 @@ import java.util.*;
                         }
 
                     } else if (cField.startsWith("FN")) {
-                        if (cField.split(":")[0].length() != "FN".length() ) {
+                        if (cField.split(":")[0].length() != "FN".length()) {
                             //System.out.println("//   InputMismatchException  - QUIT- после Ключа нет :");
                             throw new InputMismatchException();
                             //continue;
                         }
                         FullName = cField.split(":")[1];
                     } else if (cField.startsWith("ORG")) {
-                        if ( cField.split(":")[0].length() !=  "ORG".length() ) {
+                        if (cField.split(":")[0].length() !=  "ORG".length()) {
                             //System.out.println("//   InputMismatchException  - QUIT- после Ключа нет :");
                             throw new InputMismatchException();
                             //continue;
                         }
                         Organization = cField.split(":")[1];
                     } else if (cField.startsWith("BDAY")) {
-                        if (cField.split(":")[0].length() != "BDAY".length() ) {
+                        if (cField.split(":")[0].length() != "BDAY".length()) {
                             //System.out.println("//   InputMismatchException  - QUIT- после Ключа нет :");
                             throw new InputMismatchException();
                             //continue;
                         }
                         cBirthday = cField.split(":")[1];
-                        if (cBirthday.length() == 10 ) { // "DD-MM-YYYY" -> len=10
-                            String aBirthday[] = cBirthday.split("-");
-                            if ( aBirthday.length == 3)  {
-                                int nYYYY ;
-                                try { nYYYY = Integer.parseInt(aBirthday[3-1]); }
-                                catch ( NumberFormatException e) { nYYYY = 0; }
-                                int nMM ;
-                                try { nMM = Integer.parseInt(aBirthday[2-1]); }
-                                catch ( NumberFormatException e) { nMM = 0; }
-                                int nDD ;
-                                try { nDD = Integer.parseInt(aBirthday[1-1]); }
-                                catch ( NumberFormatException e) { nDD = 0; }
-                                if ( nYYYY != 0 & nMM != 0 & nDD != 0 ) {
-                                    Birthday = new GregorianCalendar( nYYYY, nMM - 1, nDD );
+                        if (cBirthday.length() == 10) { // "DD-MM-YYYY" -> len=10
+                            String[] aBirthday  = cBirthday.split("-");
+                            if (aBirthday.length == 3)  {
+                                int nYYYY;
+                                try {
+                                    nYYYY = Integer.parseInt(aBirthday[3 - 1]);
+                                } catch (NumberFormatException e) {
+                                    nYYYY = 0;
+                                }
+                                int nMM;
+                                try {
+                                    nMM = Integer.parseInt(aBirthday[2 -  1]);
+                                } catch (NumberFormatException e) {
+                                    nMM = 0;
+                                }
+                                int nDD;
+                                try {
+                                    nDD = Integer.parseInt(aBirthday[1 - 1]);
+                                } catch (NumberFormatException e) {
+                                    nDD = 0;
+                                }
+                                if (nYYYY != 0 & nMM != 0 & nDD != 0) {
+                                    Birthday = new GregorianCalendar(nYYYY, nMM - 1, nDD);
                                 } else {
                                     //System.out.println("//   InputMismatchException  - QUIT- nYYYY != 0 & nMM != 0 & nDD != 0");
                                     throw new InputMismatchException();
@@ -163,22 +172,25 @@ import java.util.*;
                         //TEL;TYPE=WORK,VOICE:4951234567 cField
                         //                    0123456789
                         // "(123) 456-7890
-                        String cType = cField.split("=")[2-1];
+                        String cType = cField.split("=")[2 - 1];
                         //System.out.println(cType);
-                        cType = cType.split(":")[1-1]; // тип телефона
+                        cType = cType.split(":")[1 - 1]; // тип телефона
                         //System.out.println(cType);
 
-                        String cNumTel = cField.split(":")[2-1];
+                        String cNumTel = cField.split(":")[2 - 1];
 
-                        long nNumTel ; // все ли цифры
-                        try { nNumTel = Long.parseLong(cNumTel); }
-                        catch ( NumberFormatException e) { nNumTel = -1; }
+                        long nNumTel; // все ли цифры
+                        try {
+                            nNumTel = Long.parseLong(cNumTel);
+                        } catch (NumberFormatException e) {
+                            nNumTel = -1;
+                        }
                         //System.out.println("nNumTel "+nNumTel+" "+cNumTel);
 
-                        if ( cNumTel.length() == 10 & nNumTel != -1) {
-                            String cNumTel_01_03 = cNumTel.substring(0,(0+3)); // c какой п-ции 0 и (0+3)->сколько знак
-                            String cNumTel_04_05 = cNumTel.substring(3,(3+3));
-                            String cNumTel_06_10 = cNumTel.substring(6,(6+4)); //String cNumTel_06_10 = cNumTel.substring(6));
+                        if (cNumTel.length() == 10 & nNumTel != -1) {
+                            String cNumTel_01_03 = cNumTel.substring(0, (0 + 3)); // c какой п-ции 0 и (0+3)->сколько знак
+                            String cNumTel_04_05 = cNumTel.substring(3, (3 + 3));
+                            String cNumTel_06_10 = cNumTel.substring(6, (6 + 4)); //String cNumTel_06_10 = cNumTel.substring(6));
                             //System.out.println(cType +" "+cNumTel_01_03+" "+cNumTel_04_03+" "+cNumTel_06_04);
                             cNumTel = "(" + cNumTel_01_03 + ") " + cNumTel_04_05 + "-" +  cNumTel_06_10;
 
@@ -186,13 +198,13 @@ import java.util.*;
                             //System.out.println("//   InputMismatchException  - QUIT- NumTel len # 10");
                             throw new InputMismatchException();
                         }
-                        if (cPhone.length() != 0  ) {
+                        if (cPhone.length() != 0) {
                             cPhone += ";";
                         }
-                        cPhone += cType +":"+cNumTel;
+                        cPhone += cType + ":" + cNumTel;
                         //System.out.println(cPhone);
                         Phone = cPhone;
-                    }//ENDIF
+                    } //ENDIF
 
                 } //NEXT
 
@@ -217,25 +229,31 @@ import java.util.*;
          * @return {@link ContactCard}, созданный из этих данных
          */
         public ContactCard getInstance(String data) {
-            Scanner scan = new Scanner( data );
-            return getInstance( scan );
+            Scanner scan = new Scanner(data);
+            return getInstance(scan);
         }
 
         /**
          * @return Полное имя - значение vCard-поля FN: например, "Forrest Gump"
          */
-        public String getFullName() {            return FullName;        }
+        public String getFullName() {
+            return FullName;
+        }
 
         /**
          * @return Организация - значение vCard-поля ORG: например, "Bubba Gump Shrimp Co."
          */
-        public String getOrganization() {return Organization;}
+        public String getOrganization() {
+            return Organization;
+        }
 
         /**
          * Если поле GENDER отсутствует в данных или равно "M", этот метод возвращает false
          * @return true если этот человек женского пола (GENDER:F)
          */
-        public boolean isWoman() {return Woman; }
+        public boolean isWoman() {
+            return Woman;
+        }
 
         /**
          * ПРИМЕЧАНИЕ: в современных приложениях рекомендуется для работы с датой применять java.time.LocalDate,
@@ -261,13 +279,13 @@ import java.util.*;
             }
             LocalDate dBDay = LocalDate.of(
                      Birthday.get(Calendar.YEAR)
-                    ,Birthday.get(Calendar.MONTH)
-                    ,Birthday.get(Calendar.DAY_OF_MONTH));
+                    , Birthday.get(Calendar.MONTH)
+                    , Birthday.get(Calendar.DAY_OF_MONTH));
             LocalDate dCurDay = LocalDate.of(
                      Calendar.getInstance().get(Calendar.YEAR)
-                    ,Calendar.getInstance().get(Calendar.MONTH)
-                    ,Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-            return Period.between( dBDay, dCurDay);
+                    , Calendar.getInstance().get(Calendar.MONTH)
+                    , Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+            return Period.between(dBDay, dCurDay);
         }
 
         /**
@@ -288,15 +306,15 @@ import java.util.*;
          * @throws NoSuchElementException если в данных нет телефона указанного типа
          */
         public String getPhone(String type) throws NoSuchElementException {
-            if ( Phone.length() == 0 ) { // нет номеров
+            if (Phone.length() == 0) { // нет номеров
                 throw new NoSuchElementException();
             }
-            if ( ! Phone.contains(type)) { // нет того типа телефона
+            if (!Phone.contains(type)) { // нет того типа телефона
                 throw new NoSuchElementException();
             }
-            String aPhone[] = Phone.split(";");
+            String[] aPhone = Phone.split(";");
             String cPhone = "";
-            for ( String cElem  : aPhone ) {
+            for (String cElem  : aPhone) {
                 if (cElem.contains(type)) {
                     cPhone = cElem.split(":")[1];
                     break;
