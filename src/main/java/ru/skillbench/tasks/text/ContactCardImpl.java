@@ -1,7 +1,7 @@
 package ru.skillbench.tasks.text;
 import java.time.LocalDate;
 import java.time.Period;
-//import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -279,12 +279,14 @@ import java.util.*;
             }
             LocalDate dBDay = LocalDate.of(
                      Birthday.get(Calendar.YEAR)
-                    , Birthday.get(Calendar.MONTH)
+                    , Birthday.get(Calendar.MONTH) + 1
                     , Birthday.get(Calendar.DAY_OF_MONTH));
+            /*
             LocalDate dCurDay = LocalDate.of(
                      Calendar.getInstance().get(Calendar.YEAR)
                     , Calendar.getInstance().get(Calendar.MONTH)
-                    , Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+                    , Calendar.getInstance().get(Calendar.DAY_OF_MONTH)); */
+            LocalDate dCurDay = LocalDate.now();
             return Period.between(dBDay, dCurDay);
         }
 
